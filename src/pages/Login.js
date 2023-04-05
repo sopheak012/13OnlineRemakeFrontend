@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import "../css/style.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/isLogin/isLoginSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,10 +24,12 @@ const Login = () => {
       });
 
       const data = await response.json();
+      console.log(data);
       setEmail("");
       setPassword("");
 
       if (response.ok) {
+        dispatch(login());
         navigate("/MainPage");
       } else {
         setError(data.error);

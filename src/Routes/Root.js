@@ -1,12 +1,14 @@
-import { useState } from "react";
 import { Link, Outlet, NavLink } from "react-router-dom";
 import "../css/style.css";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../features/isLogin/isLoginSlice";
 
 function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.isLogin.isLogin);
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    dispatch(logout());
   };
 
   return (
@@ -19,8 +21,10 @@ function Navbar() {
             </NavLink>
           </h1>
 
-          {isLoggedIn ? (
-            <button onClick={handleLogout}>Logout</button>
+          {isLogin ? (
+            <Link to="/" onClick={handleLogout}>
+              Logout
+            </Link>
           ) : (
             <>
               <Link to="/login">Login</Link>

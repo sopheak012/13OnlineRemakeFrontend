@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../features/isLogin/isLoginSlice";
 
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,6 +24,7 @@ function Signup() {
       setEmail("");
       setPassword("");
       if (response.ok) {
+        dispatch(login());
         navigate("/MainPage");
       } else {
         setError(data.error);
