@@ -9,6 +9,7 @@ function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.removeItem("user");
   };
 
   return (

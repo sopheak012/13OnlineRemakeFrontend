@@ -29,6 +29,7 @@ const Login = () => {
 
       if (response.ok) {
         dispatch(login(data));
+        localStorage.setItem("user", JSON.stringify(data));
         navigate("/MainPage");
       } else {
         setError(data.error);

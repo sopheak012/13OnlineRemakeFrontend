@@ -25,6 +25,7 @@ function Signup() {
       setPassword("");
       if (response.ok) {
         dispatch(signup(data));
+        localStorage.setItem("user", JSON.stringify(data));
         navigate("/MainPage");
       } else {
         setError(data.error);

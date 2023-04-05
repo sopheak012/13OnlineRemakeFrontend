@@ -4,11 +4,16 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import { login } from "./features/user/user";
+import { useDispatch } from "react-redux";
+import { useCheckToken } from "./hooks/useCheckToken";
 
 import Root from "./Routes/Root";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MainPage from "./pages/MainPage";
+
+//check if the user is login via localStorage
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +26,7 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  useCheckToken();
   return (
     <>
       <RouterProvider router={router} />
