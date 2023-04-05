@@ -1,0 +1,111 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+
+/* Define color variables */
+:root {
+  --primary: #bc4123;
+  --secondary: #2b3452;
+}
+
+/* Apply styles to header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--secondary);
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Apply styles to nav */
+nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+/* Apply styles to nav links */
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
+  font-size: 18px;
+  transition: all 0.3s ease-in-out;
+}
+
+nav a:hover:not(.HomePageLink) {
+  background-color: #fff;
+  color: var(--secondary);
+  border-radius: 5px;
+}
+
+/* Apply styles to h1 */
+h1 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+  font-weight: 700;
+  border-bottom: 3px solid var(--primary);
+  margin-right: auto;
+}
+
+/* Apply styles to main */
+main {
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Login and SignUp component*/
+
+.form-container {
+  max-width: 500px;
+  margin: 40px auto;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.form-group input {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+button[type="submit"]:hover {
+  background: #bc4123;
+}
