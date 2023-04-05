@@ -18,16 +18,14 @@ function Signup() {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      console.log(data);
       setEmail("");
       setPassword("");
       if (response.ok) {
         navigate("/MainPage");
       } else {
-        setError("Invalid email and/or password. Please try again.");
+        setError(data.error);
       }
     } catch (error) {
-      console.error(error);
       setError("Invalid email and/or password. Please try again.");
     }
   };

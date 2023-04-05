@@ -1,8 +1,14 @@
-import React from "react";
+import { useState } from "react";
 import { Link, Outlet, NavLink } from "react-router-dom";
 import "../css/style.css";
 
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <div>
       <header>
@@ -12,8 +18,15 @@ function Navbar() {
               13Online
             </NavLink>
           </h1>
-          <Link to="/login">Login</Link>
-          <Link to="/signup">Signup</Link>
+
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>Logout</button>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Signup</Link>
+            </>
+          )}
         </nav>
       </header>
       <main>
