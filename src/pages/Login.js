@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../css/style.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../features/isLogin/isLoginSlice";
+import { login } from "../features/user/user";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,12 +24,11 @@ const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data);
       setEmail("");
       setPassword("");
 
       if (response.ok) {
-        dispatch(login());
+        dispatch(login(data));
         navigate("/MainPage");
       } else {
         setError(data.error);

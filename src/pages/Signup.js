@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { login } from "../features/isLogin/isLoginSlice";
+import { signup } from "../features/user/user";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -24,7 +24,7 @@ function Signup() {
       setEmail("");
       setPassword("");
       if (response.ok) {
-        dispatch(login());
+        dispatch(signup(data));
         navigate("/MainPage");
       } else {
         setError(data.error);
