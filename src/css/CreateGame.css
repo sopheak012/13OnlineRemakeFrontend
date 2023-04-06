@@ -1,0 +1,67 @@
+:root {
+  --primary: #bc4123;
+  --secondary: #2b3452;
+}
+.create-game {
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.create-game h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.create-game form {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-game .form-control {
+  margin-bottom: 20px;
+}
+
+.create-game label {
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.create-game input[type="text"],
+.create-game input[type="number"],
+.create-game select {
+  width: 98%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+}
+
+#submit-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+#submit-button:hover {
+  background-color: var(--primary);
+}
+
+@media screen and (min-width: 768px) {
+  .create-game {
+    width: 50%;
+    margin: 20px auto;
+  }
+}

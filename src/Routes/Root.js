@@ -31,8 +31,8 @@ function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login">Login</Link>
-              <Link to="/signup">Signup</Link>
+              <Link to="login">Login</Link>
+              <Link to="signup">Signup</Link>
             </>
           )}
         </nav>

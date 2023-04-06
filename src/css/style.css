@@ -114,3 +114,27 @@ button[type="submit"]:hover {
 .error {
   color: red;
 }
+
+/* game button */
+
+.game-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.game-button a {
+  display: block;
+  margin: 0 10px;
+  padding: 10px 20px;
+  background-color: var(--secondary);
+  color: #fff;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+
+.game-button a:hover {
+  background-color: #bc4123;
+}
