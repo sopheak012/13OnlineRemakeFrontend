@@ -1,7 +1,10 @@
-import React from "react";
+import { useSelector } from "react-redux";
 import "../css/joinGame.css";
 
 function JoinGame() {
+  const gameList = useSelector((state) => state.gameList.gameList);
+
+  console.log("RUN");
   return (
     <div className="join-game-container">
       <h1>Join Game</h1>
@@ -17,16 +20,22 @@ function JoinGame() {
         </div>
         <div className="game-list-body">
           {/* Game list goes here */}
-          <div className="game-item">
-            <div className="game-name">Game 1</div>
-            <div className="game-players">2/4</div>
-            <div className="game-type">Public</div>
-          </div>
-          <div className="game-item">
-            <div className="game-name">Game 2</div>
-            <div className="game-players">1/2</div>
-            <div className="game-type">Private</div>
-          </div>
+          {gameList && gameList.length > 1 ? (
+            gameList.map((game, index) =>
+              index > 0 && game.gameName ? (
+                <div className="game-item" key={index}>
+                  <div className="game-name">{game.gameName}</div>
+                  <div className="game-players">{`${game.playerList.length}/${game.maxPlayers}`}</div>
+                  <div className="game-type">
+                    {game.lobby === "public" ? "Public" : "Private"}
+                  </div>
+                  <button className="join-button">Join</button>
+                </div>
+              ) : null
+            )
+          ) : (
+            <div>No rooms available</div>
+          )}
         </div>
       </div>
       <button className="refresh-button">Refresh</button>

@@ -38,6 +38,21 @@ button {
   background-color: #f4f4f4;
 }
 
+/*join-button*/
+.join-button {
+  padding: 5px 10px;
+  font-size: 15px;
+  color: #fff;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join-button:hover {
+  background-color: var(--primary);
+}
+
 .search-bar button {
   padding: 10px 20px;
   font-size: 18px;

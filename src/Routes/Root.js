@@ -5,7 +5,7 @@ import { logout } from "../features/user/user";
 
 function Navbar() {
   const dispatch = useDispatch();
-  const { isLogin, email } = useSelector((state) => state.user.user);
+  const { isLogin, username } = useSelector((state) => state.user.user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -24,7 +24,7 @@ function Navbar() {
 
           {isLogin ? (
             <>
-              <p>{email}</p>
+              <p>{username}</p>
               <Link to="/" onClick={handleLogout}>
                 Logout
               </Link>
