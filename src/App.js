@@ -4,8 +4,6 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import { login } from "./features/user/user";
-import { useDispatch } from "react-redux";
 import { useCheckToken } from "./hooks/useCheckToken";
 
 import Root from "./Routes/Root";
@@ -14,6 +12,7 @@ import Signup from "./pages/Signup";
 import MainPage from "./pages/MainPage";
 import JoinGame from "./pages/JoinGame";
 import CreateGame from "./pages/CreateGame";
+import SendMessage from "./socket/SendMessage";
 
 //check if the user is login via localStorage
 
@@ -22,9 +21,10 @@ const router = createBrowserRouter(
     <Route path="/" element={<Root />}>
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
-      <Route path="mainPage" element={<MainPage />}>
+      <Route path="/:username" element={<MainPage />}>
         <Route path="join" element={<JoinGame />} />
         <Route path="create" element={<CreateGame />} />
+        <Route path="message" element={<SendMessage />} />
       </Route>
     </Route>
   )

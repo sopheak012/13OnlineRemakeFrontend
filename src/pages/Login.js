@@ -30,11 +30,12 @@ const Login = () => {
       if (response.ok) {
         dispatch(login(data));
         localStorage.setItem("user", JSON.stringify(data));
-        navigate("/MainPage");
+        navigate(`/${data.username}`);
       } else {
         setError(data.error);
       }
     } catch (error) {
+      console.log(error.message);
       setError("Invalid email and/or password. Please try again.");
     }
   };
