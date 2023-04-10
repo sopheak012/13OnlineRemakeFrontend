@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   gameList: [
     {
-      gameName: null,
+      lobbyName: null,
       maxPlayers: null,
       lobby: null,
       playerList: [],
@@ -16,17 +16,17 @@ export const gameListSlice = createSlice({
   initialState,
   reducers: {
     createGame: (state, { payload }) => {
-      const { gameName, maxPlayers, lobby, host } = payload;
+      const { lobbyName, maxPlayers, lobby, host } = payload;
 
-      const isGameNameUnique = state.gameList.every(
-        (game) => game.gameName !== gameName
+      const islobbyNameUnique = state.gameList.every(
+        (game) => game.lobbyName !== lobbyName
       );
 
-      if (!isGameNameUnique) {
+      if (!islobbyNameUnique) {
         throw new Error("The lobby name already taken");
       }
       const newGame = {
-        gameName,
+        lobbyName,
         maxPlayers,
         lobby,
         playerList: [
@@ -39,9 +39,9 @@ export const gameListSlice = createSlice({
       state.gameList.push(newGame);
     },
     joinGame: (state, { payload }) => {
-      const { gameName, player } = payload;
+      const { lobbyName, player } = payload;
       const gameIndex = state.gameList.findIndex(
-        (game) => game.gameName === gameName
+        (game) => game.lobbyName === lobbyName
       );
       if (gameIndex !== -1) {
         const playerList = state.gameList[gameIndex].playerList;
@@ -59,10 +59,10 @@ export const gameListSlice = createSlice({
     },
 
     leaveGame: (state, { payload }) => {
-      const { gameName, playerName } = payload;
-      const game = state.gameList.find((game) => game.gameName === gameName);
+      const { lobbyName, playerName } = payload;
+      const game = state.gameList.find((game) => game.lobbyName === lobbyName);
       if (!game) {
-        throw new Error(`The game "${gameName}" does not exist`);
+        throw new Error(`The game "${lobbyName}" does not exist`);
       }
       const index = game.playerList.findIndex(
         (player) => player.name === playerName
@@ -73,7 +73,7 @@ export const gameListSlice = createSlice({
     },
     deleteGame: (state, { payload }) => {
       const index = state.gameList.findIndex(
-        (game) => game.gameName === payload.gameName
+        (game) => game.lobbyName === payload.lobbyName
       );
       if (index !== -1) {
         state.gameList.splice(index, 1);

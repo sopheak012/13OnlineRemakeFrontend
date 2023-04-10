@@ -2,29 +2,33 @@ import React, { useState } from "react";
 import "../css/CreateGame.css";
 import { useDispatch, useSelector } from "react-redux";
 import { createGame } from "../features/gameList/gameList";
+import { useNavigate } from "react-router-dom";
 
 function CreateGame() {
-  const [gameName, setGameName] = useState("");
+  const [lobbyName, setlobbyName] = useState("");
   const [maxPlayers, setMaxPlayers] = useState("");
   const [lobby, setLobby] = useState("public");
   const host = useSelector((state) => state.user.user.username);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(
       createGame({
-        gameName,
+        lobbyName,
         maxPlayers,
         lobby,
         host,
       })
     );
-    setGameName("");
+    setlobbyName("");
     setMaxPlayers(1);
     setLobby("public");
+    navigate(`/${host}/lobby/${lobbyName}`);
   };
+
   return (
     <div className="create-game">
       <h1>Create Game</h1>
@@ -35,8 +39,8 @@ function CreateGame() {
             type="text"
             id="game-name"
             name="game-name"
-            value={gameName}
-            onChange={(event) => setGameName(event.target.value)}
+            value={lobbyName}
+            onChange={(event) => setlobbyName(event.target.value)}
             required
           />
         </div>

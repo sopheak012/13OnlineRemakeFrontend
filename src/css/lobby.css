@@ -1,0 +1,44 @@
+.lobby-container {
+  margin: 20px;
+  padding: 20px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.lobby-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.player-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.player {
+  flex-basis: 33.33%;
+  text-align: center;
+  font-size: 24px;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.cancel-btn:hover {
+  background-color: #999;
+}

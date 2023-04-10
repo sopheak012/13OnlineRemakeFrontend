@@ -10,11 +10,9 @@ import Root from "./Routes/Root";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MainPage from "./pages/MainPage";
-import JoinGame from "./pages/JoinGame";
-import CreateGame from "./pages/CreateGame";
-import SendMessage from "./socket/SendMessage";
-
-//check if the user is login via localStorage
+import JoinLobby from "./pages/JoinLobby";
+import CreateLobby from "./pages/CreateLobby";
+import Lobby from "./pages/Lobby";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,9 +20,9 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       <Route path="/:username" element={<MainPage />}>
-        <Route path="join" element={<JoinGame />} />
-        <Route path="create" element={<CreateGame />} />
-        <Route path="message" element={<SendMessage />} />
+        <Route path="join" element={<JoinLobby />} />
+        <Route path="create" element={<CreateLobby />} />
+        <Route path="lobby/:lobbyName" element={<Lobby />} />
       </Route>
     </Route>
   )
