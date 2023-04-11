@@ -3,14 +3,14 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
-import { SocketProvider } from "./socket/initSocket";
+import { initSocket } from "./socket/initSocket";
+
+initSocket();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <SocketProvider>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </SocketProvider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );

@@ -13,6 +13,7 @@ import MainPage from "./pages/MainPage";
 import JoinLobby from "./pages/JoinLobby";
 import CreateLobby from "./pages/CreateLobby";
 import Lobby from "./pages/Lobby";
+import ChatMessage from "./socket/ChatMessage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
         <Route path="create" element={<CreateLobby />} />
         <Route path="lobby/:lobbyName" element={<Lobby />} />
       </Route>
+      <Route path="/message" element={<ChatMessage />}></Route>
     </Route>
   )
 );

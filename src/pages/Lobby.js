@@ -1,15 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/lobby.css";
+import { deleteGame } from "../features/gameList/gameList";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const Lobby = () => {
   // static data
-  const lobbyName = "Waiting Room";
+  //const lobbyName = "Waiting Room";
   const players = ["Player 1", "Player 2", "Player 3"];
 
+  const { username, lobbyName } = useParams();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleCancelClick = () => {
+    dispatch.deleteGame({ lobbyName });
     navigate(-1);
   };
 

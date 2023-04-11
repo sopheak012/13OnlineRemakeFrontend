@@ -12,26 +12,32 @@ function CreateGame() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(
-      createGame({
-        lobbyName,
-        maxPlayers,
-        lobby,
-        host,
-      })
-    );
-    setlobbyName("");
-    setMaxPlayers(1);
-    setLobby("public");
-    navigate(`/${host}/lobby/${lobbyName}`);
+    try {
+      dispatch(
+        createGame({
+          lobbyName,
+          maxPlayers,
+          lobby,
+          host,
+        })
+      );
+      setlobbyName("");
+      setMaxPlayers(1);
+      setLobby("public");
+      navigate(`/${host}/lobby/${lobbyName}`);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
     <div className="create-game">
       <h1>Create Game</h1>
+      {error && <div className="error">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <label htmlFor="game-name">Game Name:</label>

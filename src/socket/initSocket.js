@@ -1,12 +1,8 @@
-import React, { createContext } from "react";
 import io from "socket.io-client";
 
-const SocketContext = createContext();
+export const socket = io("http://localhost:4000");
 
-const initSocket = () => {
-  console.log("TESTEST");
-  const socket = io("http://localhost:4000");
-
+export const initSocket = () => {
   socket.on("connect", () => {
     console.log("Socket connected:", socket.id);
   });
@@ -14,16 +10,4 @@ const initSocket = () => {
   socket.on("disconnect", () => {
     console.log("Socket disconnected");
   });
-
-  return socket;
 };
-
-const SocketProvider = ({ children }) => {
-  const socket = initSocket();
-
-  return (
-    <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>
-  );
-};
-
-export { SocketProvider, SocketContext };
