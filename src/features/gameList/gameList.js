@@ -71,9 +71,9 @@ export const gameListSlice = createSlice({
         game.playerList.splice(index, 1);
       }
     },
-    deleteGame: (state, { payload }) => {
+    deleteGame: (state, action) => {
       const index = state.gameList.findIndex(
-        (game) => game.lobbyName === payload.lobbyName
+        (game) => game.lobbyName === action.payload
       );
       if (index !== -1) {
         state.gameList.splice(index, 1);
