@@ -1,19 +1,28 @@
 import { useState, useEffect } from "react";
 import "../css/joinGame.css";
 import { socket } from "../socket/initSocket";
-import { useDispatch, useSelector } from "react-redux";
-import { updateState } from "../features/gameList/gameList";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { joinGame, updateState } from "../features/gameList/gameList";
 
 const JoinGame = () => {
-  const gameList = useSelector((state) => state.gameList.gameList);
+  const [gameList, setGameList] = useState([]);
+  const { username } = useParams();
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     socket.emit("get-update", (update) => {
+      setGameList(update);
       dispatch(updateState(update));
     });
   }, []);
 
+  const handleJoin = (lobbyName) => {
+    dispatch(joinGame({ lobbyName, username }));
+    navigate(`/${username}/lobby/${lobbyName}`);
+  };
   return (
     <div className="join-game-container">
       <h1>Join Game</h1>
@@ -36,7 +45,12 @@ const JoinGame = () => {
                   <div className="game-name">{game.lobbyName}</div>
                   <div className="game-players">{`${game.playerList.length}/${game.maxPlayers}`}</div>
                   <div className="game-type">{game.lobby}</div>
-                  <button className="join-button">Join</button>
+                  <button
+                    className="join-button"
+                    onClick={() => handleJoin(game.lobbyName)}
+                  >
+                    Join
+                  </button>
                 </div>
               ) : null
             )

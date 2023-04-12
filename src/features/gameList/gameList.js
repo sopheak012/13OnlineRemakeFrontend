@@ -40,7 +40,7 @@ export const gameListSlice = createSlice({
       console.log(state.gameList);
     },
     joinGame: (state, { payload }) => {
-      const { lobbyName, player } = payload;
+      const { lobbyName, username } = payload;
       const gameIndex = state.gameList.findIndex(
         (game) => game.lobbyName === lobbyName
       );
@@ -48,9 +48,10 @@ export const gameListSlice = createSlice({
         const playerList = state.gameList[gameIndex].playerList;
         if (playerList.length < state.gameList[gameIndex].maxPlayers) {
           playerList.push({
-            username: player.username,
+            username,
             isHost: false,
           });
+          socket.emit("lobby-update", state.gameList);
         } else {
           throw new Error("The game is already full");
         }
@@ -83,7 +84,6 @@ export const gameListSlice = createSlice({
     },
     updateState: (state, action) => {
       state.gameList = action.payload;
-      socket.emit("lobby-update", state.gameList);
     },
   },
 });
