@@ -1,9 +1,18 @@
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import "../css/joinGame.css";
+import { socket } from "../socket/initSocket";
+import { useDispatch, useSelector } from "react-redux";
+import { updateState } from "../features/gameList/gameList";
 
-function JoinGame() {
+const JoinGame = () => {
   const gameList = useSelector((state) => state.gameList.gameList);
-  console.log(gameList);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.emit("get-update", (update) => {
+      dispatch(updateState(update));
+    });
+  }, []);
 
   return (
     <div className="join-game-container">
@@ -39,6 +48,6 @@ function JoinGame() {
       <button className="refresh-button">Refresh</button>
     </div>
   );
-}
+};
 
 export default JoinGame;

@@ -22,7 +22,12 @@ function CreateGame() {
           lobbyName,
           maxPlayers,
           lobby,
-          host,
+          playerList: [
+            {
+              username: host,
+              isHost: true,
+            },
+          ],
         })
       );
       setlobbyName("");

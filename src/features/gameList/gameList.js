@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { socket } from "../../socket/initSocket";
 
 const initialState = {
   gameList: [
@@ -16,27 +17,27 @@ export const gameListSlice = createSlice({
   initialState,
   reducers: {
     createGame: (state, { payload }) => {
-      const { lobbyName, maxPlayers, lobby, host } = payload;
+      const { lobbyName, maxPlayers, lobby, playerList } = payload;
 
-      const islobbyNameUnique = state.gameList.every(
+      const isLobbyNameUnique = state.gameList.every(
         (game) => game.lobbyName !== lobbyName
       );
 
-      if (!islobbyNameUnique) {
-        throw new Error("The lobby name already taken");
+      if (!isLobbyNameUnique) {
+        throw new Error("The lobby name is already taken");
       }
+
       const newGame = {
         lobbyName,
         maxPlayers,
         lobby,
-        playerList: [
-          {
-            username: host,
-            isHost: true,
-          },
-        ],
+        playerList,
       };
+
       state.gameList.push(newGame);
+      socket.emit("lobby-update", state.gameList);
+
+      console.log(state.gameList);
     },
     joinGame: (state, { payload }) => {
       const { lobbyName, player } = payload;
@@ -78,11 +79,16 @@ export const gameListSlice = createSlice({
       if (index !== -1) {
         state.gameList.splice(index, 1);
       }
+      socket.emit("lobby-update", state.gameList);
+    },
+    updateState: (state, action) => {
+      state.gameList = action.payload;
+      socket.emit("lobby-update", state.gameList);
     },
   },
 });
 
-export const { createGame, joinGame, leaveGame, deleteGame } =
+export const { createGame, joinGame, leaveGame, deleteGame, updateState } =
   gameListSlice.actions;
 
 export default gameListSlice.reducer;
