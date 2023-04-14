@@ -13,16 +13,18 @@ const Lobby = () => {
   const [isHost, setIsHost] = useState(false);
 
   useEffect(() => {
+    //get initial update
     socket.emit("get-update", (update) => {
-      const getGameList =
-        update.find((game) => game.lobbyName === lobbyName)?.playerList || [];
-      setPlayerlist(getGameList);
-      setIsHost(
-        getGameList.some(
-          (player) => player.isHost && player.username === username
-        )
-      );
+      handleGetUpdate(update);
     });
+
+    socket.on("update", (update) => {
+      handleGetUpdate(update);
+    });
+
+    return () => {
+      socket.off("update");
+    };
   }, []);
 
   const players = playerList.map((player) => player.username);
@@ -30,6 +32,16 @@ const Lobby = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const handleGetUpdate = (update) => {
+    const getGameList =
+      update.find((game) => game.lobbyName === lobbyName)?.playerList || [];
+    setPlayerlist(getGameList);
+    setIsHost(
+      getGameList.some(
+        (player) => player.isHost && player.username === username
+      )
+    );
+  };
   const handleCancelClick = () => {
     dispatch(deleteGame(lobbyName));
     navigate(-1);

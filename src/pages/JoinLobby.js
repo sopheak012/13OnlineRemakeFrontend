@@ -13,10 +13,20 @@ const JoinGame = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    //get initial update
     socket.emit("get-update", (update) => {
       setGameList(update);
       dispatch(updateState(update));
     });
+    //update the page with any new change from server
+    socket.on("update", (update) => {
+      setGameList(update);
+      dispatch(updateState(update));
+    });
+    // cleanup function to turn off the socket
+    return () => {
+      socket.off("update");
+    };
   }, []);
 
   const handleJoin = (lobbyName) => {
