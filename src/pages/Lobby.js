@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/lobby.css";
-import { deleteGame } from "../features/gameList/gameList";
+import {
+  deleteGame,
+  updateState,
+  leaveGame,
+} from "../features/gameList/gameList";
 import { useParams } from "react-router-dom";
 import { socket } from "../socket/initSocket";
-import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const Lobby = () => {
   const { lobbyName, username } = useParams();
-  const [playerList, setPlayerlist] = useState([]);
+  const [players, setPlayers] = useState([]);
   const [isHost, setIsHost] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     //get initial update
     socket.emit("get-update", (update) => {
+      dispatch(updateState(update));
       handleGetUpdate(update);
     });
 
     socket.on("update", (update) => {
+      dispatch(updateState(update));
       handleGetUpdate(update);
     });
 
@@ -27,42 +35,51 @@ const Lobby = () => {
     };
   }, []);
 
-  const players = playerList.map((player) => player.username);
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
+  //get list of player in current lobby from state
   const handleGetUpdate = (update) => {
-    const getGameList =
+    const getLobby =
       update.find((game) => game.lobbyName === lobbyName)?.playerList || [];
-    setPlayerlist(getGameList);
     setIsHost(
-      getGameList.some(
-        (player) => player.isHost && player.username === username
-      )
+      getLobby.some((player) => player.isHost && player.username === username)
     );
+    const players = getLobby.map((player) => player.username);
+    setPlayers(players);
+
+    if (players.length === 0) {
+      navigate(-1);
+    }
   };
-  const handleCancelClick = () => {
-    dispatch(deleteGame(lobbyName));
+
+  const handleLeave = () => {
+    if (!isHost) {
+      dispatch(leaveGame({ lobbyName, username }));
+    } else {
+      dispatch(deleteGame(lobbyName));
+    }
     navigate(-1);
   };
 
   return (
-    <div className="lobby-container">
-      <h1>{lobbyName}</h1>
-      {isHost && (
-        <button className="cancel-btn" onClick={handleCancelClick}>
-          Cancel
-        </button>
-      )}
-      <div className="player-list">
-        {players.map((player, index) => (
-          <div key={index} className="player">
-            {player}
+    <>
+      {players.length > 0 && (
+        <div className="lobby-container">
+          <h1>{lobbyName}</h1>
+          <div className="player-list">
+            {players.map((player, index) => (
+              <div key={index} className="player">
+                {player}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+          <button onClick={handleLeave}>Leave Lobby</button>
+        </div>
+      )}
+      {players.length === 0 && (
+        <div className="lobby-container">
+          <p>Lobby has been deleted.</p>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -37,6 +37,9 @@ export const gameListSlice = createSlice({
       state.gameList.push(newGame);
       socket.emit("lobby-update", state.gameList);
 
+      //create a new Room in the socket
+      socket.emit("create-room", lobbyName);
+
       console.log(state.gameList);
     },
     joinGame: (state, { payload }) => {
@@ -61,18 +64,21 @@ export const gameListSlice = createSlice({
     },
 
     leaveGame: (state, { payload }) => {
-      const { lobbyName, playerName } = payload;
+      const { lobbyName, username } = payload;
       const game = state.gameList.find((game) => game.lobbyName === lobbyName);
       if (!game) {
         throw new Error(`The game "${lobbyName}" does not exist`);
       }
       const index = game.playerList.findIndex(
-        (player) => player.name === playerName
+        (player) => player.username === username
       );
       if (index !== -1) {
+        console.log("deleted");
         game.playerList.splice(index, 1);
+        socket.emit("lobby-update", state.gameList);
       }
     },
+
     deleteGame: (state, action) => {
       const index = state.gameList.findIndex(
         (game) => game.lobbyName === action.payload
