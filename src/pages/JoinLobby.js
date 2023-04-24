@@ -8,9 +8,11 @@ import { joinGame, updateState } from "../features/gameList/gameList";
 const JoinGame = () => {
   const [gameList, setGameList] = useState([]);
   const { username } = useParams();
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     //get initial update
@@ -30,11 +32,20 @@ const JoinGame = () => {
   }, []);
 
   const handleJoin = (lobbyName) => {
-    dispatch(joinGame({ lobbyName, username }));
-    navigate(`/${username}/lobby/${lobbyName}`);
+    try {
+      setError(null);
+      dispatch(joinGame({ lobbyName, username }));
+      navigate(`/${username}/lobby/${lobbyName}`);
+    } catch (error) {
+      setError(error.message);
+      setTimeout(() => {
+        setError(null);
+      }, 500);
+    }
   };
   return (
     <div className="join-game-container">
+      {error && <div className="error-message">{error}</div>}
       <h1>Join Game</h1>
       <div className="search-bar">
         <input type="text" placeholder="Search" />

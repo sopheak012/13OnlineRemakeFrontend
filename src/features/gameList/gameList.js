@@ -56,7 +56,7 @@ export const gameListSlice = createSlice({
           });
           socket.emit("lobby-update", state.gameList);
         } else {
-          throw new Error("The game is already full");
+          throw new Error("The Lobby is full");
         }
       } else {
         throw new Error("The game does not exist");
