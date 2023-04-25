@@ -59,7 +59,9 @@ const Lobby = () => {
     navigate(-1);
   };
 
-  const handleStart = () => {};
+  const handleStart = () => {
+    navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
+  };
 
   return (
     <>

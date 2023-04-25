@@ -17,6 +17,10 @@ import Lobby from "../pages/Lobby";
 import Root from "../Routes/Root";
 import MainPage from "../pages/MainPage";
 
+//components
+import AuthRequired from "./AuthRequired";
+import CardGame from "./CardGame";
+
 function Router() {
   const user = useSelector((state) => state.user.user);
   const router = createBrowserRouter(
@@ -28,6 +32,7 @@ function Router() {
           <Route path="join" element={<JoinLobby />} />
           <Route path="create" element={<CreateLobby />} />
           <Route path="lobby/:lobbyName" element={<Lobby />} />
+          <Route path="lobby/:lobbyName/cardgame" element={<CardGame />} />
         </Route>
       </Route>
     )
