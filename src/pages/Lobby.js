@@ -59,6 +59,8 @@ const Lobby = () => {
     navigate(-1);
   };
 
+  const handleStart = () => {};
+
   return (
     <>
       {players.length > 0 && (
@@ -71,7 +73,10 @@ const Lobby = () => {
               </div>
             ))}
           </div>
-          <button onClick={handleLeave}>Leave Lobby</button>
+          <div className="btn-container">
+            <button onClick={handleLeave}>Leave Lobby</button>
+            {isHost && <button onClick={handleStart}>Start Game</button>}
+          </div>
         </div>
       )}
       {players.length === 0 && (

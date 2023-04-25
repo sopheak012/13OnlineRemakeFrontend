@@ -28,7 +28,7 @@ function Signup() {
       if (response.ok) {
         dispatch(signup(data));
         localStorage.setItem("user", JSON.stringify(data));
-        navigate("/MainPage");
+        navigate(`/user/${data.username}`);
       } else {
         setError(data.error);
       }

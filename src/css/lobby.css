@@ -1,3 +1,8 @@
+:root {
+  --primary: #bc4123;
+  --secondary: #2b3452;
+}
+
 .lobby-container {
   margin: 20px;
   padding: 20px;
@@ -13,6 +18,25 @@
   margin-bottom: 20px;
 }
 
+.btn-container {
+  margin: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+.btn-container button {
+  padding: 5px 10px;
+  font-size: 15px;
+  color: #fff;
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-container button:hover {
+  background-color: var(--primary);
+}
+
 .player-list {
   display: flex;
   flex-wrap: wrap;
@@ -26,19 +50,4 @@
   margin: 10px;
   border: 2px solid #ccc;
   border-radius: 10px;
-}
-
-.cancel-btn {
-  background-color: #ccc;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.cancel-btn:hover {
-  background-color: #999;
 }

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import "../css/style.css";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/user/user";
 
 const Login = () => {
+  const user = useSelector((state) => state.user.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -30,7 +31,7 @@ const Login = () => {
       if (response.ok) {
         dispatch(login(data));
         localStorage.setItem("user", JSON.stringify(data));
-        navigate(`/${data.username}`);
+        navigate(`/user/${data.username}`);
       } else {
         setError(data.error);
       }

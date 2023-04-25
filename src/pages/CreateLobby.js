@@ -33,7 +33,7 @@ function CreateGame() {
       setlobbyName("");
       setMaxPlayers(1);
       setLobby("public");
-      navigate(`/${host}/lobby/${lobbyName}`);
+      navigate(`/user/${host}/lobby/${lobbyName}`);
     } catch (error) {
       setError(error.message);
     }

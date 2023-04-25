@@ -35,7 +35,7 @@ const JoinGame = () => {
     try {
       setError(null);
       dispatch(joinGame({ lobbyName, username }));
-      navigate(`/${username}/lobby/${lobbyName}`);
+      navigate(`/user/${username}/lobby/${lobbyName}`);
     } catch (error) {
       setError(error.message);
       setTimeout(() => {
