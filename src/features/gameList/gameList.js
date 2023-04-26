@@ -38,9 +38,7 @@ export const gameListSlice = createSlice({
       socket.emit("lobby-update", state.gameList);
 
       //create a new Room in the socket
-      socket.emit("create-room", lobbyName);
-
-      console.log(state.gameList);
+      socket.emit("join-room", lobbyName);
     },
     joinGame: (state, { payload }) => {
       const { lobbyName, username } = payload;

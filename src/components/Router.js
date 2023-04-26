@@ -2,7 +2,6 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
-  Navigate,
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -19,7 +18,7 @@ import MainPage from "../pages/MainPage";
 
 //components
 import AuthRequired from "./AuthRequired";
-import CardGame from "./CardGame";
+import ChatBox from "./ChatBox";
 
 function Router() {
   const user = useSelector((state) => state.user.user);
@@ -32,7 +31,7 @@ function Router() {
           <Route path="join" element={<JoinLobby />} />
           <Route path="create" element={<CreateLobby />} />
           <Route path="lobby/:lobbyName" element={<Lobby />} />
-          <Route path="lobby/:lobbyName/cardgame" element={<CardGame />} />
+          <Route path="lobby/:lobbyName/cardgame" element={<ChatBox />} />
         </Route>
       </Route>
     )

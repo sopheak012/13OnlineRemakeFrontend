@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Phaser from "phaser";
+import cardsPath from "../phaser/assets/cards.png";
 
 const CardGame = () => {
   const gameContainer = useRef(null);
@@ -7,8 +8,8 @@ const CardGame = () => {
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
-      width: 240,
-      height: 342,
+      width: 800,
+      height: 600,
       backgroundColor: "#ffffff",
       parent: gameContainer.current,
       scene: {
@@ -20,33 +21,43 @@ const CardGame = () => {
     const game = new Phaser.Game(config);
 
     function preload() {
-      this.load.spritesheet("cards", "frontend/src/phaser/assets/cards.png", {
+      this.load.spritesheet("cards", cardsPath, {
         frameWidth: 80,
         frameHeight: 114,
+        frameSpacing: 2, // Adjust the frame spacing based on the gap between the cards
       });
     }
 
     function create() {
-      const cards = [];
-
-      for (let i = 0; i < 3; i++) {
-        const cardIndex = Math.floor(Math.random() * 52);
-        const card = this.add.sprite(i * 80, 0, "cards", cardIndex);
-        cards.push(card);
-      }
+      const card = this.add.sprite(
+        game.config.width / 2,
+        game.config.height / 2,
+        "cards",
+        12
+      ); // Display the Ace of Spades, which has an index of 12
+      card.setOrigin(0.5, 0.5);
+      card.setData("backgroundColor", "red"); // Set the background color to red
 
       this.input.on("pointerdown", () => {
-        for (let i = 0; i < 3; i++) {
-          const cardIndex = Math.floor(Math.random() * 52);
-          cards[i].setFrame(cardIndex);
-        }
+        card.setTint(Math.random() * 0xffffff); // Set a random tint for the card
       });
     }
 
     return () => game.destroy();
   }, []);
 
-  return <div ref={gameContainer}></div>;
+  return (
+    <div
+      ref={gameContainer}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    ></div>
+  );
 };
 
 export default CardGame;
