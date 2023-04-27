@@ -1,63 +1,43 @@
-import React, { useRef, useEffect } from "react";
-import Phaser from "phaser";
-import cardsPath from "../phaser/assets/cards.png";
+import React, { useState } from "react";
+import "../styles/ChatBox.css";
 
-const CardGame = () => {
-  const gameContainer = useRef(null);
+const ChatBox = ({ messages, onSend }) => {
+  const [inputValue, setInputValue] = useState("");
 
-  useEffect(() => {
-    const config = {
-      type: Phaser.AUTO,
-      width: 800,
-      height: 600,
-      backgroundColor: "#ffffff",
-      parent: gameContainer.current,
-      scene: {
-        preload,
-        create,
-      },
-    };
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
-    const game = new Phaser.Game(config);
-
-    function preload() {
-      this.load.spritesheet("cards", cardsPath, {
-        frameWidth: 80,
-        frameHeight: 114,
-        frameSpacing: 2, // Adjust the frame spacing based on the gap between the cards
-      });
-    }
-
-    function create() {
-      const card = this.add.sprite(
-        game.config.width / 2,
-        game.config.height / 2,
-        "cards",
-        12
-      ); // Display the Ace of Spades, which has an index of 12
-      card.setOrigin(0.5, 0.5);
-      card.setData("backgroundColor", "red"); // Set the background color to red
-
-      this.input.on("pointerdown", () => {
-        card.setTint(Math.random() * 0xffffff); // Set a random tint for the card
-      });
-    }
-
-    return () => game.destroy();
-  }, []);
+  const handleSendClick = () => {
+    if (inputValue.trim() === "") return;
+    onSend(inputValue);
+    setInputValue("");
+  };
 
   return (
-    <div
-      ref={gameContainer}
-      style={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    ></div>
+    <div className="chat-box">
+      <div className="chat-box__messages">
+        {messages.map((msg, index) => (
+          <div key={index} className="chat-box__message">
+            <span className="chat-box__username">{msg.username}:</span>{" "}
+            {msg.text}
+          </div>
+        ))}
+      </div>
+      <div className="chat-box__input-container">
+        <input
+          type="text"
+          className="chat-box__input"
+          placeholder="Type a message..."
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+        <button className="chat-box__send-button" onClick={handleSendClick}>
+          Send
+        </button>
+      </div>
+    </div>
   );
 };
 
-export default CardGame;
+export default ChatBox;

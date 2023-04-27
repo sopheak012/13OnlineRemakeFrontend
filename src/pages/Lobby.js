@@ -19,6 +19,10 @@ const Lobby = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    //listen for start-game
+    socket.on("start-game", () => {
+      navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
+    });
     //get initial update
     socket.emit("get-update", (update) => {
       dispatch(updateState(update));
@@ -31,6 +35,7 @@ const Lobby = () => {
     });
 
     return () => {
+      socket.off("start-game");
       socket.off("update");
     };
   }, []);
@@ -60,6 +65,7 @@ const Lobby = () => {
   };
 
   const handleStart = () => {
+    socket.emit("start-game", lobbyName);
     navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
   };
 
