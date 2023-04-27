@@ -21,6 +21,7 @@ const Lobby = () => {
   useEffect(() => {
     //listen for start-game
     socket.on("start-game", () => {
+      console.log('Client received "start-game" event');
       navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
     });
     //get initial update

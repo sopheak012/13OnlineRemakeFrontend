@@ -17,7 +17,7 @@ function Navbar() {
       <header>
         <nav>
           <h1>
-            <NavLink className="HomePageLink" to={`/${username}`}>
+            <NavLink className="HomePageLink" to={`/user/${username}`}>
               13Online
             </NavLink>
           </h1>

@@ -53,6 +53,7 @@ export const gameListSlice = createSlice({
             isHost: false,
           });
           socket.emit("lobby-update", state.gameList);
+          socket.emit("join-room", lobbyName);
         } else {
           throw new Error("The Lobby is full");
         }
