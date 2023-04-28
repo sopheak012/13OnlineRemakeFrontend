@@ -14,7 +14,7 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/user/signup", {
+      const response = await fetch("https://one3backend.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
