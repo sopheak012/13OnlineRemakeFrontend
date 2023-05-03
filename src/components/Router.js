@@ -17,8 +17,8 @@ import Root from "../Routes/Root";
 import MainPage from "../pages/MainPage";
 
 //components
-import AuthRequired from "./AuthRequired";
 import ChatBox from "./ChatBox";
+import CardGame from "../CardGame/CardGame";
 
 function Router() {
   const user = useSelector((state) => state.user.user);
@@ -27,7 +27,7 @@ function Router() {
       <Route path="/" element={<Root />}>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="user/:username" element={<MainPage />}>
+        <Route path="user/:username" element={<CardGame />}>
           <Route path="join" element={<JoinLobby />} />
           <Route path="create" element={<CreateLobby />} />
           <Route path="lobby/:lobbyName" element={<Lobby />} />

@@ -14,16 +14,13 @@ function Signup() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(
-        "https://one3backend.onrender.com/user/signup",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, email, password }),
-        }
-      );
+      const response = await fetch("http://localhost:4000/user/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
       const data = await response.json();
       setUsername("");
       setEmail("");

@@ -1,0 +1,18 @@
+/* src/App.css */
+.app {
+  display: flex;
+}
+
+.players {
+  flex: 1;
+}
+
+.field {
+  width: 200px;
+}
+
+.field-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
