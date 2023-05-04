@@ -33,6 +33,7 @@ const initialState = {
   winner: null,
   gameOver: false,
   fieldCard: null,
+  extraTurn: false,
 };
 
 const cardGameSlice = createSlice({
@@ -50,6 +51,19 @@ const cardGameSlice = createSlice({
     },
     setInitialTurn: (state, action) => {
       state.turn = action.payload;
+
+      // Find the player whose turn it is
+      const player = state.players.find(
+        (player) => player.username === action.payload
+      );
+
+      if (player) {
+        // Get a card from the deck
+        const card = state.deck.pop();
+
+        // Add the card to the player's hand
+        player.hand.push(card);
+      }
     },
     removePlayer: (state, action) => {
       state.players = state.players.filter(
@@ -64,7 +78,6 @@ const cardGameSlice = createSlice({
       });
     },
     playCard: (state, action) => {
-      const { lobbyName } = action.payload;
       const player = state.players.find(
         (player) => player.username === action.payload.username
       );
@@ -76,20 +89,55 @@ const cardGameSlice = createSlice({
         state.fieldCard.push(action.payload.card);
       }
     },
-    endTurn: (state, action) => {
+    endTurn: (state) => {
       const currentPlayerIndex = state.players.findIndex(
         (player) => player.username === state.turn
       );
       const nextPlayerIndex = (currentPlayerIndex + 1) % state.players.length;
       state.turn = state.players[nextPlayerIndex].username;
+      state.extraTurn = false; // reset the extraTurn here
     },
     setWinner: (state, action) => {
       state.winner = action.payload;
       state.gameOver = true;
     },
+
+    drawCard: (state) => {
+      const drawnCard = state.deck.pop();
+      state.fieldCard.unshift(drawnCard);
+    },
+
+    setExtraTurn: (state) => {
+      state.extraTurn = true;
+    },
     updateGameState: (state, action) => {
       // Update the entire state with the new gameState
       return action.payload;
+    },
+    resetGame: (state) => {
+      // Reset state to initial values
+      state.deck = [...initialState.deck];
+      state.players = initialState.players.map((player) => ({
+        ...player,
+        hand: [],
+      }));
+      state.winner = initialState.winner;
+      state.gameOver = initialState.gameOver;
+      state.fieldCard = initialState.fieldCard;
+      state.extraTurn = initialState.extraTurn;
+
+      // Set winner as the starting turn
+      state.turn = state.winner;
+
+      // Shuffle deck
+      state.deck = state.deck.sort(() => Math.random() - 0.5);
+
+      // Deal cards
+      state.players.forEach((player) => {
+        for (let i = 0; i < 5; i++) {
+          player.hand.push(state.deck.pop());
+        }
+      });
     },
   },
 });
@@ -105,6 +153,9 @@ export const {
   setInitialTurn,
   updateGameState,
   showPlayer,
+  drawCard,
+  setExtraTurn,
+  resetGame,
 } = cardGameSlice.actions;
 
 export default cardGameSlice.reducer;

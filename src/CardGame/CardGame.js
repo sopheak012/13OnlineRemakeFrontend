@@ -5,6 +5,8 @@ import {
   playCard,
   endTurn,
   updateGameState,
+  drawCard,
+  setExtraTurn,
 } from "../features/cardGame/cardGame";
 import { socket } from "../socket/initSocket";
 import Card from "./Card";
@@ -34,14 +36,31 @@ const CardGame = () => {
 
   const handleCardClick = (player, card) => {
     if (player.username === turn) {
-      const lastCard = fieldCard && fieldCard[fieldCard.length - 1];
-      if (lastCard && !card.includes(lastCard.split("_")[1])) {
-        return;
+      let cardGameState = store.getState().cardGame;
+      if (!cardGameState.extraTurn) {
+        if (!fieldCard || fieldCard.length === 0) {
+          // The field is empty, the player can play only one card
+          dispatch(playCard({ username: player.username, card, lobbyName }));
+          dispatch(endTurn());
+          cardGameState = store.getState().cardGame;
+          socket.emit("cardGame-update", { lobbyName, cardGameState });
+        } else {
+          // The field is not empty, the player can play cards as before
+          const lastCard = fieldCard && fieldCard[0];
+          if (lastCard && !card.includes(lastCard.split("_")[1])) {
+            return;
+          }
+          dispatch(playCard({ username: player.username, card, lobbyName }));
+          dispatch(setExtraTurn());
+          cardGameState = store.getState().cardGame;
+          socket.emit("cardGame-update", { lobbyName, cardGameState });
+        }
+      } else {
+        dispatch(playCard({ username: player.username, card, lobbyName }));
+        dispatch(endTurn());
+        cardGameState = store.getState().cardGame;
+        socket.emit("cardGame-update", { lobbyName, cardGameState });
       }
-      dispatch(playCard({ username: player.username, card, lobbyName }));
-      dispatch(endTurn());
-      const cardGameState = store.getState().cardGame;
-      socket.emit("cardGame-update", { lobbyName, cardGameState });
     }
   };
 
@@ -51,6 +70,12 @@ const CardGame = () => {
       const cardGameState = store.getState().cardGame;
       socket.emit("cardGame-update", { lobbyName, cardGameState });
     }
+  };
+
+  const handleDealCard = () => {
+    dispatch(drawCard());
+    const cardGameState = store.getState().cardGame;
+    socket.emit("cardGame-update", { lobbyName, cardGameState });
   };
 
   return (
@@ -93,6 +118,7 @@ const CardGame = () => {
               <Card key={index} card={card} onClick={() => {}} />
             ))}
         </div>
+        <button onClick={handleDealCard}>Deal Card</button>
       </div>
     </div>
   );
