@@ -46,13 +46,10 @@ const cardGameSlice = createSlice({
       state.players.push({
         username: action.payload.username,
         hand: [],
-        showHand: action.payload.showHand,
       });
     },
-
     setInitialTurn: (state, action) => {
       state.turn = action.payload;
-      socket.emit("cardGame-update", (action.payload.lobbyName, state));
     },
     removePlayer: (state, action) => {
       state.players = state.players.filter(
@@ -67,6 +64,7 @@ const cardGameSlice = createSlice({
       });
     },
     playCard: (state, action) => {
+      const { lobbyName } = action.payload;
       const player = state.players.find(
         (player) => player.username === action.payload.username
       );
@@ -78,15 +76,12 @@ const cardGameSlice = createSlice({
         state.fieldCard.push(action.payload.card);
       }
     },
-
-    endTurn: (state) => {
+    endTurn: (state, action) => {
       const currentPlayerIndex = state.players.findIndex(
         (player) => player.username === state.turn
       );
       const nextPlayerIndex = (currentPlayerIndex + 1) % state.players.length;
-      state.players[currentPlayerIndex].showHand = false;
       state.turn = state.players[nextPlayerIndex].username;
-      state.players[nextPlayerIndex].showHand = true;
     },
     setWinner: (state, action) => {
       state.winner = action.payload;
@@ -109,6 +104,7 @@ export const {
   setWinner,
   setInitialTurn,
   updateGameState,
+  showPlayer,
 } = cardGameSlice.actions;
 
 export default cardGameSlice.reducer;

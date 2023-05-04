@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import cardGame, {
+import {
   playCard,
   endTurn,
   updateGameState,
@@ -9,13 +9,15 @@ import cardGame, {
 import { socket } from "../socket/initSocket";
 import Card from "./Card";
 import CardBack from "./CardBack";
+import { FaCrown } from "react-icons/fa";
+import { store } from "../app/store";
 
 const CardGame = () => {
   const dispatch = useDispatch();
   const players = useSelector((state) => state.cardGame.players);
   const { lobbyName, username } = useParams();
   const fieldCard = useSelector((state) => state.cardGame.fieldCard);
-  const cardGameState = useSelector((state) => state.cardGame);
+  const turn = useSelector((state) => state.cardGame.turn);
 
   useEffect(() => {
     socket.emit("initial-cardGame", (update) => {
@@ -31,9 +33,24 @@ const CardGame = () => {
   }, []);
 
   const handleCardClick = (player, card) => {
-    dispatch(playCard({ username: player.username, card }));
-    dispatch(endTurn());
-    console.log(cardGameState);
+    if (player.username === turn) {
+      const lastCard = fieldCard && fieldCard[fieldCard.length - 1];
+      if (lastCard && !card.includes(lastCard.split("_")[1])) {
+        return;
+      }
+      dispatch(playCard({ username: player.username, card, lobbyName }));
+      dispatch(endTurn());
+      const cardGameState = store.getState().cardGame;
+      socket.emit("cardGame-update", { lobbyName, cardGameState });
+    }
+  };
+
+  const handlePass = () => {
+    if (username === turn) {
+      dispatch(endTurn());
+      const cardGameState = store.getState().cardGame;
+      socket.emit("cardGame-update", { lobbyName, cardGameState });
+    }
   };
 
   return (
@@ -41,9 +58,12 @@ const CardGame = () => {
       <div className="players">
         {players.map((player) => (
           <div key={player.username}>
-            <h2>{player.username}</h2>
+            <h2>
+              {player.username}{" "}
+              {player.username === turn && <FaCrown color="gold" />}
+            </h2>
             <div>
-              {player.showHand ? (
+              {player.username === username ? (
                 player.hand.map((card, index) => {
                   return (
                     <Card
@@ -63,6 +83,7 @@ const CardGame = () => {
             </div>
           </div>
         ))}
+        {turn === username && <button onClick={handlePass}>Pass</button>}
       </div>
       <div className="field">
         <h2>Field Cards</h2>

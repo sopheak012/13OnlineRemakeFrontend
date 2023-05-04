@@ -84,7 +84,6 @@ const Lobby = () => {
       dispatch(
         addPlayer({
           username: player,
-          showHand: player === username,
         })
       );
     });
