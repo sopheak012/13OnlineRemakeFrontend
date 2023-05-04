@@ -27,11 +27,11 @@ function Router() {
       <Route path="/" element={<Root />}>
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
-        <Route path="user/:username" element={<CardGame />}>
+        <Route path="user/:username" element={<MainPage />}>
           <Route path="join" element={<JoinLobby />} />
           <Route path="create" element={<CreateLobby />} />
           <Route path="lobby/:lobbyName" element={<Lobby />} />
-          <Route path="lobby/:lobbyName/cardgame" element={<ChatBox />} />
+          <Route path="lobby/:lobbyName/cardgame" element={<CardGame />} />
         </Route>
       </Route>
     )

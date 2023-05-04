@@ -1,9 +1,7 @@
-// src/Card.js
-import React from "react";
 import "./Card.css";
 
 const Card = ({ card, onClick }) => {
-  const imageUrl = `${process.env.PUBLIC_URL}/assets/${card}.png`;
+  const imageUrl = `${process.env.PUBLIC_URL}/assets/BACK_CROSSHATCH.png`;
 
   return (
     <div className="card" onClick={onClick}>

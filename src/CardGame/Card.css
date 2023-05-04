@@ -16,3 +16,12 @@
   flex-direction: column;
   gap: 10px;
 }
+
+.card {
+  display: inline-block;
+  margin: 5px;
+}
+
+.card img {
+  cursor: pointer;
+}

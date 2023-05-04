@@ -1,35 +1,39 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  shuffleDeck,
-  addPlayer,
-  dealCards,
+import cardGame, {
   playCard,
   endTurn,
-  setInitialTurn,
+  updateGameState,
 } from "../features/cardGame/cardGame";
+import { socket } from "../socket/initSocket";
 import Card from "./Card";
+import CardBack from "./CardBack";
 
 const CardGame = () => {
   const dispatch = useDispatch();
   const players = useSelector((state) => state.cardGame.players);
-  const { username } = useParams();
+  const { lobbyName, username } = useParams();
   const fieldCard = useSelector((state) => state.cardGame.fieldCard);
+  const cardGameState = useSelector((state) => state.cardGame);
 
   useEffect(() => {
-    dispatch(shuffleDeck());
-    dispatch(addPlayer({ username: "Player 1", showHand: true }));
-    dispatch(addPlayer({ username: "Player 2", showHand: false }));
-    dispatch(addPlayer({ username: "Player 3", showHand: false }));
-    dispatch(addPlayer({ username: "Player 4", showHand: false }));
-    dispatch(dealCards());
-    dispatch(setInitialTurn("Player 1"));
-  }, [dispatch, username]);
+    socket.emit("initial-cardGame", (update) => {
+      dispatch(updateGameState(update));
+    });
+    socket.on("cardGame-update", (data) => {
+      dispatch(updateGameState(data));
+    });
+
+    return () => {
+      socket.off("cardGame-update");
+    };
+  }, []);
 
   const handleCardClick = (player, card) => {
     dispatch(playCard({ username: player.username, card }));
     dispatch(endTurn());
+    console.log(cardGameState);
   };
 
   return (
@@ -39,17 +43,23 @@ const CardGame = () => {
           <div key={player.username}>
             <h2>{player.username}</h2>
             <div>
-              {player.showHand
-                ? player.hand.map((card, index) => {
-                    return (
-                      <Card
-                        key={index}
-                        card={card}
-                        onClick={() => handleCardClick(player, card)}
-                      />
-                    );
-                  })
-                : "Cards hidden"}
+              {player.showHand ? (
+                player.hand.map((card, index) => {
+                  return (
+                    <Card
+                      key={index}
+                      card={card}
+                      onClick={() => handleCardClick(player, card)}
+                    />
+                  );
+                })
+              ) : (
+                <React.Fragment>
+                  {[...Array(player.hand.length)].map((_, index) => (
+                    <CardBack key={index} />
+                  ))}
+                </React.Fragment>
+              )}
             </div>
           </div>
         ))}

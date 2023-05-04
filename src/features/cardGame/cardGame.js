@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { socket } from "../../socket/initSocket";
 
 const values = [
   "02",
@@ -51,6 +52,7 @@ const cardGameSlice = createSlice({
 
     setInitialTurn: (state, action) => {
       state.turn = action.payload;
+      socket.emit("cardGame-update", (action.payload.lobbyName, state));
     },
     removePlayer: (state, action) => {
       state.players = state.players.filter(
@@ -90,6 +92,10 @@ const cardGameSlice = createSlice({
       state.winner = action.payload;
       state.gameOver = true;
     },
+    updateGameState: (state, action) => {
+      // Update the entire state with the new gameState
+      return action.payload;
+    },
   },
 });
 
@@ -102,6 +108,7 @@ export const {
   endTurn,
   setWinner,
   setInitialTurn,
+  updateGameState,
 } = cardGameSlice.actions;
 
 export default cardGameSlice.reducer;

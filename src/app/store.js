@@ -11,10 +11,10 @@ export const store = configureStore({
   },
 });
 
-store.subscribe(() => {
-  console.log(store.getState().user);
-});
+// store.subscribe(() => {
+//   console.log(store.getState().user);
+// });
 
-store.subscribe(() => {
-  console.log(store.getState().gameList);
-});
+// store.subscribe(() => {
+//   console.log(store.getState().gameList);
+// });

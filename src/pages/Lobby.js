@@ -8,7 +8,16 @@ import {
 } from "../features/gameList/gameList";
 import { useParams } from "react-router-dom";
 import { socket } from "../socket/initSocket";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import cardGame, {
+  shuffleDeck,
+  addPlayer,
+  dealCards,
+  setInitialTurn,
+} from "../features/cardGame/cardGame";
+
+//import store
+import { store } from "../app/store";
 
 const Lobby = () => {
   const { lobbyName, username } = useParams();
@@ -24,6 +33,7 @@ const Lobby = () => {
       console.log('Client received "start-game" event');
       navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
     });
+
     //get initial update
     socket.emit("get-update", (update) => {
       dispatch(updateState(update));
@@ -39,6 +49,9 @@ const Lobby = () => {
       socket.off("start-game");
       socket.off("update");
     };
+  }, []);
+  useEffect(() => {
+    console.log(players);
   }, []);
 
   //get list of player in current lobby from state
@@ -65,9 +78,28 @@ const Lobby = () => {
     navigate(-1);
   };
 
+  const cardGameStart = () => {
+    dispatch(shuffleDeck());
+    players.forEach((player) => {
+      dispatch(
+        addPlayer({
+          username: player,
+          showHand: player === username,
+        })
+      );
+    });
+    dispatch(dealCards());
+    if (isHost) {
+      dispatch(setInitialTurn(username));
+    }
+    const cardGameState = store.getState().cardGame;
+    socket.emit("cardGame-update", { lobbyName, cardGameState });
+  };
+
   const handleStart = () => {
     socket.emit("start-game", lobbyName);
     navigate(`/user/${username}/lobby/${lobbyName}/cardgame`);
+    cardGameStart();
   };
 
   return (
