@@ -7,6 +7,7 @@ import {
   updateGameState,
   drawCard,
   setExtraTurn,
+  resetGame,
 } from "../features/cardGame/cardGame";
 import { socket } from "../socket/initSocket";
 import Card from "./Card";
@@ -20,6 +21,8 @@ const CardGame = () => {
   const { lobbyName, username } = useParams();
   const fieldCard = useSelector((state) => state.cardGame.fieldCard);
   const turn = useSelector((state) => state.cardGame.turn);
+  const gameOver = useSelector((state) => state.cardGame.gameOver);
+  const winner = useSelector((state) => state.cardGame.winner);
 
   useEffect(() => {
     socket.emit("initial-cardGame", (update) => {
@@ -33,6 +36,13 @@ const CardGame = () => {
       socket.off("cardGame-update");
     };
   }, []);
+
+  useEffect(() => {
+    if (gameOver) {
+      alert(`${winner} won the game!`);
+      dispatch(resetGame());
+    }
+  }, [gameOver, winner]);
 
   const handleCardClick = (player, card) => {
     if (player.username === turn) {

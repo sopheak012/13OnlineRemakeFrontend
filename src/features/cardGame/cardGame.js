@@ -86,9 +86,16 @@ const cardGameSlice = createSlice({
       if (state.fieldCard === null) {
         state.fieldCard = [action.payload.card];
       } else {
-        state.fieldCard.push(action.payload.card);
+        state.fieldCard.unshift(action.payload.card);
+      }
+
+      // Check if player's hand is empty and declare them the winner if it is
+      if (player.hand.length === 0) {
+        state.winner = player.username;
+        state.gameOver = true;
       }
     },
+
     endTurn: (state) => {
       const currentPlayerIndex = state.players.findIndex(
         (player) => player.username === state.turn
@@ -105,6 +112,14 @@ const cardGameSlice = createSlice({
     drawCard: (state) => {
       const drawnCard = state.deck.pop();
       state.fieldCard.unshift(drawnCard);
+
+      // End the current turn
+      const currentPlayerIndex = state.players.findIndex(
+        (player) => player.username === state.turn
+      );
+      const nextPlayerIndex = (currentPlayerIndex + 1) % state.players.length;
+      state.turn = state.players[nextPlayerIndex].username;
+      state.extraTurn = false; // reset the extraTurn here
     },
 
     setExtraTurn: (state) => {
