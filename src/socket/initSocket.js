@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-export const socket = io("http://localhost:4000");
+export const socket = io("https://one3backend.onrender.com");
 
 export const initSocket = () => {
   socket.on("connect", () => {
