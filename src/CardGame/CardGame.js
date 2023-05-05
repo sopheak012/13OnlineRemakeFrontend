@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   playCard,
   endTurn,
@@ -17,6 +17,7 @@ import { store } from "../app/store";
 
 const CardGame = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const players = useSelector((state) => state.cardGame.players);
   const { lobbyName, username } = useParams();
   const fieldCard = useSelector((state) => state.cardGame.fieldCard);
@@ -39,10 +40,13 @@ const CardGame = () => {
 
   useEffect(() => {
     if (gameOver) {
-      alert(`${winner} won the game!`);
       dispatch(resetGame());
+      navigate(`/user/${username}/lobby/${lobbyName}`);
+      setTimeout(() => {
+        alert(`${winner} won the game!`);
+      }, 50);
     }
-  }, [gameOver, winner]);
+  }, [winner]);
 
   const handleCardClick = (player, card) => {
     if (player.username === turn) {

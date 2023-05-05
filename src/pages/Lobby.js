@@ -50,9 +50,6 @@ const Lobby = () => {
       socket.off("update");
     };
   }, []);
-  useEffect(() => {
-    console.log(players);
-  }, []);
 
   //get list of player in current lobby from state
   const handleGetUpdate = (update) => {

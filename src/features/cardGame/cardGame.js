@@ -72,7 +72,7 @@ const cardGameSlice = createSlice({
     },
     dealCards: (state) => {
       state.players.forEach((player) => {
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
           player.hand.push(state.deck.pop());
         }
       });
@@ -130,29 +130,31 @@ const cardGameSlice = createSlice({
       return action.payload;
     },
     resetGame: (state) => {
-      // Reset state to initial values
-      state.deck = [...initialState.deck];
-      state.players = initialState.players.map((player) => ({
-        ...player,
-        hand: [],
-      }));
-      state.winner = initialState.winner;
-      state.gameOver = initialState.gameOver;
-      state.fieldCard = initialState.fieldCard;
-      state.extraTurn = initialState.extraTurn;
+      return initialState;
 
-      // Set winner as the starting turn
-      state.turn = state.winner;
+      // // Reset state to initial values
+      // state.deck = [...initialState.deck];
+      // state.players = initialState.players.map((player) => ({
+      //   ...player,
+      //   hand: [],
+      // }));
+      // state.winner = initialState.winner;
+      // state.gameOver = initialState.gameOver;
+      // state.fieldCard = initialState.fieldCard;
+      // state.extraTurn = initialState.extraTurn;
 
-      // Shuffle deck
-      state.deck = state.deck.sort(() => Math.random() - 0.5);
+      // // Set winner as the starting turn
+      // state.turn = state.winner;
 
-      // Deal cards
-      state.players.forEach((player) => {
-        for (let i = 0; i < 5; i++) {
-          player.hand.push(state.deck.pop());
-        }
-      });
+      // // Shuffle deck
+      // state.deck = state.deck.sort(() => Math.random() - 0.5);
+
+      // // Deal cards
+      // state.players.forEach((player) => {
+      //   for (let i = 0; i < 5; i++) {
+      //     player.hand.push(state.deck.pop());
+      //   }
+      // });
     },
   },
 });
