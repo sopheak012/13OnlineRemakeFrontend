@@ -72,7 +72,7 @@ const cardGameSlice = createSlice({
     },
     dealCards: (state) => {
       state.players.forEach((player) => {
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 6; i++) {
           player.hand.push(state.deck.pop());
         }
       });
